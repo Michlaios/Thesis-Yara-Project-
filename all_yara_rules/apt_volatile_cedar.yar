@@ -1,0 +1,28 @@
+rule Explosive_EXE : APT {
+	meta:
+		description = "Explosion/Explosive Malware - Volatile Cedar APT"
+		author = "Check Point Software Technologies Inc."
+		id = "3a9fb6b2-2f19-5d70-81ed-a08c3b8b2d80"
+	strings:
+		$DLD_S = "DLD-S:"
+		$DLD_E = "DLD-E:"
+	condition:
+		all of them and
+        uint16(0) == 0x5A4D
+}
+
+rule Explosive_UA {
+	meta:
+		description = "Explosive Malware Embedded User Agent - Volatile Cedar APT http://goo.gl/HQRCdw"
+		license = "Detection Rule License 1.1 https://github.com/Neo23x0/signature-base/blob/master/LICENSE"
+		author = "Florian Roth (Nextron Systems)"
+		reference = "http://goo.gl/HQRCdw"
+		date = "2015/04/03"
+		score = 60
+		id = "d88d5fd6-adf9-5ced-8b79-e47e3ffbde50"
+	strings:
+		$x1 = "Mozilla/4.0 (compatible; MSIE 7.0; MSIE 6.0; Windows NT 5.1; .NET CLR 2.0.50727)" fullword
+	condition:
+		$x1 and
+        uint16(0) == 0x5A4D
+}
