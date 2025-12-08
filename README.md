@@ -1,15 +1,21 @@
 Έχω ανεβάσει το σκριπτ που κάνει το filtering στους κανόνες καθώς και δύο directories.  Το directory 'rejected' έχει αρχεία .yar που απορρίφθηκαν από τον κώδικα ως ephemeral (12) και το accepted αυτά που έγιναν δεκτά (37), όλα αυτά από ένα σύνολο συνολικά 49 αρχείων. Προφανώς το τεστάρισμα του κώδικα δεν έγινε μόνο σε αυτά τα αρχεία απλά αυτό είναι το τελευταίο σύνολο αρχείων στο οποίο επέλεξα να κάνω το τελευταίο τεστ του σκριπτ προκειμένου να παρουσιάσω εδώ τα αποτελέσματα. Τα αποτελέσματα είναι αρκετά αντιπροσωπευτικά πιστεύω. 
 
 Γενικότερα σε ένα μεγάλο σετ από 874 κανόνες το σκριπτ αυτό είχε ως output:
-==================================================
+
 PROCESSING COMPLETE
-==================================================
+
 Total files processed: 874
+
 Files kept (original): 446
+
 Files kept (filtered): 92
+
 Files rejected: 523
+
 Total rules analyzed: 12976
+
 Rules kept: 10671
+
 Overall keep rate: 61.6%
 
 
@@ -20,4 +26,38 @@ Overall keep rate: 61.6%
 
 Κρατάμε ολόκληρο το αρχείο εάν ΟΛΟΙ οι κανόνες που περιέχει είναι χρήσιμοι. Σε αντίθετη περίπτωση κρατάμε μόνος αυτούς που είναι χρήσιμους και του κάνουμε write σε ένα αρχείο .yar με το ίδιο όνομα αρχείου με αυτό από το οποίο προήλθαν.
 
-Τέλος έχω μαζέψει από public repos συνολικά 2553 αρχεία yara.
+Τέλος, έχω μαζέψει συνολικά 2553 αρχεία yara από τα repos:
+
+https://github.com/reversinglabs/ reversinglabs-YARA-rules 
+
+https://github.com/InQuest/awesome-YARA 
+
+https://gist.github.com/pedramamini/c586a151a978f971b70412ca4485c491 
+
+https://github.com/bartblaze/YARA-rules 
+
+https://github.com/airbnb/binaryalert
+
+https://github.com/codewatchorg/Burp-YARA-Rules 
+
+https://github.com/kevoreilly/CAPEv2
+
+https://github.com/CyberDefenses/CDI_YARA 
+
+https://github.com/citizenlab/malware-signatures 
+
+https://github.com/MalGamy/YARA_Rules 
+
+https://github.com/kevoreilly/CAPE 
+
+https://github.com/stvemillertime/ConventionEngine 
+
+https://github.com/deadbits/YARA-rules 
+
+https://github.com/elastic/protections-artifacts
+
+https://github.com/mandiant/red_team_tool_countermeasures 
+
+https://github.com/Neo23x0/signature-base
+
+
