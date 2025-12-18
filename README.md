@@ -1,10 +1,6 @@
+In this repo I have uploaded the script that filters the yara rules that I have gathered so far. There are also two directories. The directory 'rejected' includes .yar files which were rejected by the script as ephemeral (12 files). The accepted direcotry includes the ones that passed the criteria (37 files). The script checked a total of 49 files. Obviously the script was not tested at only 49 files. This is just a small subset of the files I have gathered, in which I chose to run the script, in order to present its results here. I thought it would be easier to see which files were accepted and rejected out of a total of 49 files, than 2.500. 
 
-Όλα τα directories είναι τα σωστά και έτοιμα για χρήση
-======================================================
-
-Έχω ανεβάσει το σκριπτ που κάνει το filtering στους κανόνες καθώς και δύο directories.  Το directory 'rejected' έχει αρχεία .yar που απορρίφθηκαν από τον κώδικα ως ephemeral (12) και το accepted αυτά που έγιναν δεκτά (37), όλα αυτά από ένα σύνολο συνολικά 49 αρχείων. Προφανώς το τεστάρισμα του κώδικα δεν έγινε μόνο σε αυτά τα αρχεία απλά αυτό είναι το τελευταίο σύνολο αρχείων στο οποίο επέλεξα να κάνω το τελευταίο τεστ του σκριπτ προκειμένου να παρουσιάσω εδώ τα αποτελέσματα. Τα αποτελέσματα είναι αρκετά αντιπροσωπευτικά πιστεύω. 
-
-Γενικότερα σε ένα μεγάλο σετ από 874 κανόνες το σκριπτ αυτό είχε ως output:
+In a testing on a bit larger set of 874 rules, the script gave the results:
 
 PROCESSING COMPLETE
 
@@ -23,14 +19,14 @@ Rules kept: 10671
 Overall keep rate: 61.6%
 
 
-Το σκριπτακι έχει περάσει αρκετές μορφές πριν καταλήξει σε αυτή που βρίσκεται τώρα. Μετά από κάθε test σε τυχαία samples που έχω κατεβάσει από repos με yara rules, το διόρθωνα και το προσάρμοζα, βλέποντας τι κάνει accept και reject και αν έχει κάνει κάποιο accept ή reject χωρίς να έπρεπε. Στην αρχή είχα ξεχάσει να καθαρίζω το content από τα metadata με αποτέλεσμα να αναγνωρίζει ως 'κακό' χαρακτηριστικό domains ή links που υπήρχαν στο metadata section. Στην πορεία ωστόσο το διόρθωσα προσθέτωντας την αντίστοιχη συνάρτηση που καθαρίζει το rule_content από το metadata section.
+The code has been through many changes and tests on subsets before reaching its final structure. After each test on random .yar file sets, I improved the scoring logic and the scoring criteria according on false positives or negatives (rejected a file or accepted a file when it shouldn't). At first I had forgotten to clean the rule content from the metadata section, therefore the script was matching as 'ephemeral' artifacts domains or links that existed in the metadata section. I solved that problem by introducing a funtion which removes the metadata section from the rule content.
+
+The most important function of the script is the analyze_individual_rule(), which accepts as parameter a rule (NOTE: not a .yar file! Just a rule! A .yar (or .yara) file might contain more than 1 yara rule) and calculates the number of code_indicators, which are desirable artifacts for a rule to have, since they indicate code reuse, similar dev env etc. It also calculates the value of infra_indicators which are mostly ephemeral or in general artifacts that we do not want our rules to have. I added many different types of possible code_indicators so that the script will add as many point as possible for any indicator that we are interested in (always with precautions in order to avoid false positives). All these different types of indicators were dded to the script after testing it on samples. At the end, we compare the values of the code_indicators and infra_indicators that a rule content has and we conclude whether it is code_centric or not. The scoring of the is_code_centric might be prone to false positives or false negatives so please I would appreciate any comments or corrections you might have. 
+
+We keep the WHOLE .yar file if every single rule in that file is useful for our purpose. In any other case we keep just the useful rules inside a .yar file and we rewrite only these useful rules in a new .yar file with the same name. So basically keep the file and discard all the useless rules inside of it
 
 
-Η πιο σημαντική συνάρτηση του κώδικα είναι η analyze_individual_rules() η οποία δέχεται ως παράμετρο ένα rule (όχι ένα ολόκληρο αρχείο, μόνο έναν κανόνα) και υπολογίζει τα code_indicators, τα οποία είναι χαρακτηριστικά ενός κανόνα που θέλουμε, αφού δείχνουν code_reuse κοινό dev env κτλ. Υπολογίζει και τα infra_indicators τα οποία είναι τα ephemeral χαρακτηριστικά. Πρόσθεσα αρκετές κατηγορίες έτσι ώστε για κάθε code_indicator που γίνεται match, το score να ανεβαινει και να είναι σίγουρο οτι θα γίνει αποδεκτός ο κανόνας από το πρόγραμμα. Όσα περισσότερα code_indicators, τόσο μεγαλύτερο το συνολικό σκορ. Όλες αυτές οι κατηγορίες προστέθηκαν σταδιακά μετά από αρκετά τεστ σε sample rules. Τα infra_indicators είναι αρκετά απλά και ξεκάθαρα. Στο τέλος υπολογίζουμε πόσα code_indicators και infra_indicators έχουμε για το rule το οποίο αναλύεται, και βγάζουμε το συμπέρασμα is_code_centric. Ο τρόπος με τον οποίο υπολογίζω την τιμή αυτής της μεταβλητής είναι λίγο αμφιλεγόμενος και μπορεί να χρειάζεται να γίνει πιο αυστηρός ή καλύτερα δομημένος.
-
-Κρατάμε ολόκληρο το αρχείο εάν ΟΛΟΙ οι κανόνες που περιέχει είναι χρήσιμοι. Σε αντίθετη περίπτωση κρατάμε μόνος αυτούς που είναι χρήσιμους και του κάνουμε write σε ένα αρχείο .yar με το ίδιο όνομα αρχείου με αυτό από το οποίο προήλθαν.
-
-Τέλος, έχω μαζέψει συνολικά 2553 αρχεία yara από τα repos:
+Lastly I have gathered a total of 2.553 yara files from the public repos:
 
 https://github.com/reversinglabs/ reversinglabs-YARA-rules 
 
