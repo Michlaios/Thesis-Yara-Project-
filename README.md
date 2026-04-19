@@ -37,7 +37,7 @@ We keep the WHOLE .yar file if every single rule in that file is useful for our 
 
 The rules I have so far
 =======================
-Lastly I have gathered a total of 2.553 yara files from the public repos:
+Lastly I have gathered a total of 3.119 yara files from the public repos:
 
 https://github.com/reversinglabs/ reversinglabs-YARA-rules 
 
@@ -70,5 +70,7 @@ https://github.com/elastic/protections-artifacts
 https://github.com/mandiant/red_team_tool_countermeasures 
 
 https://github.com/Neo23x0/signature-base
+
+https://github.com/Yara-Rules/rules
 
 
