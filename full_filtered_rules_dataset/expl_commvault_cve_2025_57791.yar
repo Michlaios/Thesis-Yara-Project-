@@ -1,0 +1,45 @@
+rule SUSP_EXPL_CommVault_CVE_2025_57791_Aug25_1 {
+   meta:
+      description = "Detects potential exploit for WT-2025-0050, authentication bypass through QCommand argument injection"
+      reference = "https://labs.watchtowr.com/guess-who-would-be-stupid-enough-to-rob-the-same-vault-twice-pre-auth-rce-chains-in-commvault/"
+      author = "X__Junior"
+      date = "2025-08-21"
+      score = 60
+   strings:
+      $sa1 = "_localadmin__"
+      $sa2 = "-localadmin"
+   condition:
+      not uint16(0) == 0x5a4d and
+      filesize < 20MB and all of them
+}
+
+rule SUSP_EXPL_CommVault_CVE_2025_57791_Aug25_2 {
+   meta:
+      description = "Detects potential exploit for WT-2025-0050, authentication bypass through QCommand argument injection"
+      reference = "https://labs.watchtowr.com/guess-who-would-be-stupid-enough-to-rob-the-same-vault-twice-pre-auth-rce-chains-in-commvault/"
+      author = "X__Junior"
+      date = "2025-08-21"
+      score = 65
+   strings:
+      $sa1 = "_localadmin__"
+      $sa2 = "-localadmin" base64
+   condition:
+      filesize < 20MB and all of them
+}
+
+rule SUSP_EXPL_CommVault_CVE_2025_57791_Artifact_Aug25 {
+   meta:
+      description = "Detects exploit artifact for WT-2025-0050, authentication bypass through QCommand argument injection"
+      reference = "https://labs.watchtowr.com/guess-who-would-be-stupid-enough-to-rob-the-same-vault-twice-pre-auth-rce-chains-in-commvault/"
+      author = "X__Junior"
+      date = "2025-08-21"
+      score = 75
+   strings:
+      $sa1 = "_localadmin__"
+      $sa2 = /-cs [a-zA-Z0-9-{}]{3,32} -cs /
+
+      $sb2 = "-localadmin" base64
+      $sb1 = "-localadmin"
+   condition:
+      filesize < 20MB and all of ($sa*) and 1 of ($sb*)
+}
