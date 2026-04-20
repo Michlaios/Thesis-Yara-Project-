@@ -2,13 +2,18 @@ Update 20-04-2026
 =================
 I have runned the script in the final large dataset of 3119 Yara rules that have been gathered from the public repos shown at the end of this README. You can find the final dataset of the 1719 that passed the filtering in the "full_filtered_rules_dataset" folder of this repo. The output of the script was : 
 
-==================================================
+
 RESULTS
 ==================================================
+
 Total files processed: 3119
+
 Files kept (original): 1370
+
 Files kept (filtered): 349
+
 Files rejected: 1400
+
 Overall keep rate: 55.1%
 
 
