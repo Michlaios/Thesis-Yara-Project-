@@ -59,7 +59,7 @@ The rules I have so far
 =======================
 Lastly I have gathered a total of 3.119 yara files from the public repos:
 
-https://github.com/reversinglabs/ reversinglabs-YARA-rules 
+https://github.com/reversinglabs/reversinglabs-YARA-rules 
 
 https://github.com/InQuest/awesome-YARA 
 
